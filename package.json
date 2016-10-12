@@ -1,13 +1,17 @@
 {
-  "name": "topuserbot",
-  "version": "0.0.1",
-  "description": "A bot for telegram to vote users in groups",
+  "name": "topusers-bot-telegram",
+  "version": "0.1.0",
+  "description": "A bot for telegram to control the karma users in groups",
   "main": "index.js",
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "https://github.com/franexposito/topusers-bot-telegram.git"
   },
-  "author": "nullpointergroup",
+  "bugs": {
+    "url": "https://github.com/franexposito/topusers-bot-telegram/issues"
+  },
+  "homepage": "https://github.com/franexposito/topusers-bot-telegram",
+  "author": "Fran Exposito <http://github.com/franexposito>",
   "license": "MIT",
   "dependencies": {
     "mongodb": "^2.2.10",
@@ -20,6 +24,7 @@
     "telegram",
     "bot",
     "top",
-    "user"
+    "user",
+    "karma"
   ]
 }

@@ -5,8 +5,8 @@ var TelegramBot = require('node-telegram-bot-api'),
   ObjectID = mongodb.ObjectID,
   port = process.env.PORT || 443,
   host = '0.0.0.0',
-  externalUrl = process.env.URL || 'http://localhost/',
-  token = process.env.TELEGRAM_TOKEN,
+  externalUrl = process.env.URL || false,
+  token = process.env.TELEGRAM_TOKEN || '247867240:AAGh7H45Fya5xtjfQKRD5ecDUdazaFUfMX8',
   options = {
     webHook: {
       host: host,
@@ -15,12 +15,16 @@ var TelegramBot = require('node-telegram-bot-api'),
     polling: true
   };
 
+var bot;
 // Setup polling way
-var bot = new TelegramBot(token, options);
+if (externalUrl == false) {
+  new TelegramBot(token);
+} else {
+  new TelegramBot(token, options);
+  bot.setWebHook(externalUrl + ':443/' + token);
+}
+
 var Groups = require('./app/models/groups.js');
-
-
-bot.setWebHook(externalUrl + ':443/' + token);
 
 //Bot /start
 bot.onText(/\/start/, function(msg, match) {
