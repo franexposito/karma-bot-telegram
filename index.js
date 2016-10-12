@@ -62,7 +62,7 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
   console.log(msg);
   var puntuacion = match[1].substr(match[1].length-2, match[1].length);
   var idGroup = msg.chat.id;
-  var userMsg = msg.chat.username;
+  var userMsg = msg.from.username;
   var user = match[1].substr(0, match[1].length-2);
   var response = "Congrats @" + user;
 
@@ -73,10 +73,6 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
   else
     puntuacion = false;
 
-  console.log(user == userMsg);
-  console.log(user);
-  console.log(userMsg);
-  
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else if (user == userMsg) {
