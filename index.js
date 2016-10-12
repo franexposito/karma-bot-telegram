@@ -5,16 +5,15 @@ var TelegramBot = require('node-telegram-bot-api'),
   ObjectID = mongodb.ObjectID,
   port = process.env.PORT || 443,
   host = '0.0.0.0',
-  externalUrl = process.env.URL || 'http://localhost/';
-
-var token = process.env.TELEGRAM_TOKEN;
-var options = {
-  webHook: {
-    host: host,
-    port: port
-  },
-  polling: true
-};
+  externalUrl = process.env.URL || 'http://localhost/',
+  token = process.env.TELEGRAM_TOKEN,
+  options = {
+    webHook: {
+      host: host,
+      port: port
+    },
+    polling: true
+  };
 
 // Setup polling way
 var bot = new TelegramBot(token, options);
@@ -54,7 +53,7 @@ bot.onText(/\/start/, function(msg, match) {
   }
 });
 
-// Up vote user
+//Bot @username++
 bot.onText(/@(.+)\+\+/, function(msg, match) {
   var idGroup = msg.chat.id;
   var user = msg.text.substring(0, msg.text.length-2).substring(1, msg.text.length);
@@ -70,6 +69,7 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
         throw ({name: "NullGroupException", message: "There is no group in db"});
       }
     }).then( function (data) {
+      console.log(data);
       var users = data.members;
       var index = Groups.indexOfMember(users, user);
 
@@ -83,8 +83,10 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
         users.push(newUser);
       }
       data.members = users;
+      console.log(data);
       return Groups.save(data);
     }).then( function (resp) {
+      console.log(response);
       bot.sendMessage(idGroup, response);
     }).catch(function (err) {
       console.log("EROR (" + new Date() + "): " + err.message);
@@ -97,7 +99,7 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
 
 });
 
-//Show top
+//Show top3 of users
 bot.onText(/\/topUser/, function(msg, match) {
   var idGroup = msg.chat.id;
 
