@@ -59,12 +59,11 @@ bot.onText(/\/start/, function(msg, match) {
 
 //Bot @username++
 bot.onText(/\/karma @(.+)/, function(msg, match) {
-  console.log(msg);
   var puntuacion = match[1].substr(match[1].length-2, match[1].length);
   var idGroup = msg.chat.id;
   var userMsg = msg.from.username;
   var user = match[1].substr(0, match[1].length-2);
-  var response = "Congrats @" + user;
+  var response = "vote for @" + user + ", saved";
 
   if (puntuacion === '++' )
     puntuacion = 1;
