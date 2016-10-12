@@ -75,8 +75,10 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
 
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
-  } else if (user === userMsg) {
+  } else if (user == userMsg) {
     bot.sendMessage(idGroup, "You can't vote yourself");
+  } else if (puntuacion == false) {
+    bot.sendMessage(idGroup, "You forgot the vote");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
       if (data.length > 0) {
