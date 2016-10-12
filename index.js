@@ -5,9 +5,20 @@ var TelegramBot = require('node-telegram-bot-api'),
   ObjectID = mongodb.ObjectID;
 
 var token = process.env.TELEGRAM_TOKEN;
+var options = {
+  webHook: {
+    port: process.env.PORT || 8443,
+    key: './key.pem',
+    cert: './crt.pem'
+  }
+};
+
 // Setup polling way
 var bot = new TelegramBot(token, {polling: true});
 var Groups = require('./app/models/groups.js');
+
+
+bot.setWebHook(process.env.HOST + ':' + process.env.PORT + '/' + token, __dirname+'/crt.pem');
 
 //Bot /start
 bot.onText(/\/start/, function(msg, match) {
