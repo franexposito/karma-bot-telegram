@@ -85,7 +85,7 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
       data.members = users;
       return Groups.save(data);
     }).then( function (resp) {
-      bot.sendMessage(fromId, response);
+      bot.sendMessage(idGroup, response);
     }).catch(function (err) {
       console.log("EROR (" + new Date() + "): " + err.message);
       if (err.name === "NullGroupException")
