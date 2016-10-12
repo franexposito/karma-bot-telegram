@@ -5,7 +5,7 @@ var TelegramBot = require('node-telegram-bot-api'),
   ObjectID = mongodb.ObjectID,
   port = process.env.PORT || 443,
   host = '0.0.0.0',
-  externalUrl = process.env.URL || 'http://localhost/',
+  externalUrl = process.env.URL || 'http://localhost/';
 
 var token = process.env.TELEGRAM_TOKEN;
 var options = {
