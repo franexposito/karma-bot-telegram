@@ -56,10 +56,10 @@ bot.onText(/\/start/, function(msg, match) {
 //Bot @username++
 bot.onText(/\/top @(.+)/, function(msg, match) {
   var idGroup = msg.chat.id;
-  var user = msg.text.substring(0, msg.text.length-2).substring(1, msg.text.length);
+  var user = match[1];
   var response = "Congrats @" + user;
 
-  console.log(match);
+  console.log(user);
 
   /*
   if (msg.chat.type !== "group") {
