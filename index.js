@@ -11,9 +11,7 @@ var token = process.env.TELEGRAM_TOKEN;
 var options = {
   webHook: {
     host: host,
-    port: port,
-    key: './key.pem',
-    cert: './crt.pem'
+    port: port
   },
   polling: true
 };
@@ -23,7 +21,7 @@ var bot = new TelegramBot(token, options);
 var Groups = require('./app/models/groups.js');
 
 
-bot.setWebHook(externalUrl + ':443/' + token, __dirname+'/crt.pem');
+bot.setWebHook(externalUrl + ':443/' + token);
 
 //Bot /start
 bot.onText(/\/start/, function(msg, match) {
