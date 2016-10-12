@@ -89,9 +89,9 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
     }).catch(function (err) {
       console.log("EROR (" + new Date() + "): " + err.message);
       if (err.name === "NullGroupException")
-        bot.sendMessage(fromId, "You need to start this group before. (/start@bestuserbot)");
+        bot.sendMessage(idGroup, "You need to start this group before. (/start@bestuserbot)");
       else
-        bot.sendMessage(fromId, "An error has occurred");
+        bot.sendMessage(idGroup, "An error has occurred");
     });
   }
 
@@ -102,7 +102,7 @@ bot.onText(/\/topUser/, function(msg, match) {
   var idGroup = msg.chat.id;
 
   if (msg.chat.type !== "group") {
-    bot.sendMessage(fromId, "This bot only works in groups");
+    bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
       if (data.length > 0) {
