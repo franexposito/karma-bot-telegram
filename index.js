@@ -63,13 +63,13 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
+      console.log(data);
       if (data.length > 0) {
         return data[0];
       } else {
         throw ({name: "NullGroupException", message: "There is no group in db"});
       }
     }).then( function (data) {
-      console.log(data);
       var users = data.members;
       var index = Groups.indexOfMember(users, user);
 
@@ -83,10 +83,8 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
         users.push(newUser);
       }
       data.members = users;
-      console.log(data);
       return Groups.save(data);
     }).then( function (resp) {
-      console.log(response);
       bot.sendMessage(idGroup, response);
     }).catch(function (err) {
       console.log("EROR (" + new Date() + "): " + err.message);
