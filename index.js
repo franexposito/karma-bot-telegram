@@ -12,7 +12,7 @@ var Groups = require('./app/models/groups.js');
 //Bot /start
 bot.onText(/\/start/, function(msg, match) {
   var fromId = msg.chat.id;
-  if (msg.chat.type !== "group" && msg.chat.type !== "private") {
+  if (msg.chat.type !== "group") {
     bot.sendMessage(fromId, "This bot only works in groups");
   } else {
     var group = {
@@ -46,7 +46,7 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
   var user = msg.text.substring(0, msg.text.length-2).substring(1, msg.text.length);
   var response = "Congrats @" + user;
 
-  if (msg.chat.type !== "group" && msg.chat.type !== "private") {
+  if (msg.chat.type !== "group") {
     bot.sendMessage(fromId, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
@@ -87,7 +87,7 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
 bot.onText(/\/topUser/, function(msg, match) {
   var idGroup = msg.chat.id;
 
-  if (msg.chat.type !== "group" && msg.chat.type !== "private") {
+  if (msg.chat.type !== "group") {
     bot.sendMessage(fromId, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
