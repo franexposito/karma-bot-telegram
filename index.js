@@ -57,12 +57,11 @@ bot.onText(/\/start/, function(msg, match) {
 // Up vote user
 bot.onText(/@(.+)\+\+/, function(msg, match) {
   var idGroup = msg.chat.id;
-  console.log(idGroup);
   var user = msg.text.substring(0, msg.text.length-2).substring(1, msg.text.length);
   var response = "Congrats @" + user;
 
   if (msg.chat.type !== "group") {
-    bot.sendMessage(fromId, "This bot only works in groups");
+    bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
       if (data.length > 0) {
