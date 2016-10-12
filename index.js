@@ -6,7 +6,7 @@ var TelegramBot = require('node-telegram-bot-api'),
   port = process.env.PORT || 443,
   host = '0.0.0.0',
   externalUrl = process.env.URL || false,
-  token = process.env.TELEGRAM_TOKEN || '247867240:AAGh7H45Fya5xtjfQKRD5ecDUdazaFUfMX8',
+  token = process.env.TELEGRAM_TOKEN,
   options = {
     webHook: {
       host: host,
@@ -18,9 +18,9 @@ var TelegramBot = require('node-telegram-bot-api'),
 var bot;
 // Setup polling way
 if (externalUrl == false) {
-  new TelegramBot(token);
+  bot = new TelegramBot(token, {polling: true});
 } else {
-  new TelegramBot(token, options);
+  bot = new TelegramBot(token, options);
   bot.setWebHook(externalUrl + ':443/' + token);
 }
 
@@ -58,13 +58,25 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot @username++
-bot.onText(/\/top @(.+)/, function(msg, match) {
+bot.onText(/\/karma @(.+)/, function(msg, match) {
+  console.log(msg);
+  var puntuacion = match[1].substr(match[1].length-2, match[1].length);
   var idGroup = msg.chat.id;
-  var user = match[1];
+  var userMsg = msg.chat.username;
+  var user = match[1].substr(0, match[1].length-2);
   var response = "Congrats @" + user;
+
+  if (puntuacion === '++' )
+    puntuacion = 1;
+  else if (puntuacion === '--')
+    puntuacion = -1;
+  else
+    puntuacion = false;
 
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
+  } else if (user === userMsg) {
+    bot.sendMessage(idGroup, "You can't vote yourself");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
       if (data.length > 0) {
@@ -77,11 +89,11 @@ bot.onText(/\/top @(.+)/, function(msg, match) {
       var index = Groups.indexOfMember(users, user);
 
       if (index > -1) {
-        users[index].votes += 1;
+        users[index].votes += puntuacion;
       } else {
         var newUser = {
           name: user,
-          votes: 1
+          votes: puntuacion
         };
         users.push(newUser);
       }
