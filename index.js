@@ -59,11 +59,12 @@ bot.onText(/@(.+)\+\+/, function(msg, match) {
   var user = msg.text.substring(0, msg.text.length-2).substring(1, msg.text.length);
   var response = "Congrats @" + user;
 
+  console.log("Error:");
+  console.log(msg);
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
-      console.log(data);
       if (data.length > 0) {
         return data[0];
       } else {
