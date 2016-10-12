@@ -1,0 +1,25 @@
+{
+  "name": "topuserbot",
+  "version": "0.0.1",
+  "description": "A bot for telegram to vote users in groups",
+  "main": "index.js",
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "author": "nullpointergroup",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^2.2.10",
+    "node-telegram-bot-api": "^0.23.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "top",
+    "user"
+  ]
+}
