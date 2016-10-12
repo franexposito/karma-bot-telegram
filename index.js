@@ -2,23 +2,28 @@ var TelegramBot = require('node-telegram-bot-api'),
   db = require('./app/db'),
   mongodb = require("mongodb"),
   mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/topusers',
-  ObjectID = mongodb.ObjectID;
+  ObjectID = mongodb.ObjectID,
+  port = process.env.PORT || 443,
+  host = '0.0.0.0',
+  externalUrl = process.env.URL || 'http://localhost/',
 
 var token = process.env.TELEGRAM_TOKEN;
 var options = {
   webHook: {
-    port: process.env.PORT || 8443,
+    host: host,
+    port: port,
     key: './key.pem',
     cert: './crt.pem'
-  }
+  },
+  polling: true
 };
 
 // Setup polling way
-var bot = new TelegramBot(token, {polling: true});
+var bot = new TelegramBot(token, options);
 var Groups = require('./app/models/groups.js');
 
 
-bot.setWebHook(process.env.HOST + ':' + process.env.PORT + '/' + token, __dirname+'/crt.pem');
+bot.setWebHook(externalUrl + ':443/' + token, __dirname+'/crt.pem');
 
 //Bot /start
 bot.onText(/\/start/, function(msg, match) {
