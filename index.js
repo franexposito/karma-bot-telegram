@@ -59,9 +59,6 @@ bot.onText(/\/top @(.+)/, function(msg, match) {
   var user = match[1];
   var response = "Congrats @" + user;
 
-  console.log(user);
-
-  /*
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
@@ -95,7 +92,7 @@ bot.onText(/\/top @(.+)/, function(msg, match) {
       else
         bot.sendMessage(idGroup, "An error has occurred");
     });
-  }*/
+  }
 
 });
 
