@@ -73,6 +73,10 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
   else
     puntuacion = false;
 
+  console.log(user == userMsg);
+  console.log(user);
+  console.log(userMsg);
+  
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else if (user == userMsg) {
