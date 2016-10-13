@@ -1,4 +1,4 @@
-var TelegramBot = require('node-telegram-bot-api'),
+var TelegramBot = require('node-telegram-bot-api-latest'),
   db = require('./app/db'),
   mongodb = require("mongodb"),
   mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/topusers',
@@ -59,7 +59,6 @@ bot.onText(/\/start/, function(msg, match) {
 
 //Bot /karma username?
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
-  console.log(msg);
   console.log("entra en devoler");
   var idGroup = msg.chat.id;
   var user = match[1];
@@ -100,7 +99,6 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
 
 //Bot /karma username++
 bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
-  console.log(msg);
   console.log("entra en voto");
   var puntuacion = match[2];
   var idGroup = msg.chat.id;
