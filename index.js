@@ -29,7 +29,7 @@ var Groups = require('./app/models/groups.js');
 //Bot /start
 bot.onText(/\/start/, function(msg, match) {
   var fromId = msg.chat.id;
-  if (msg.chat.type !== "group" || msg.chat.type !== "supergroup") {
+  if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(fromId, "This bot only works in groups");
   } else {
     var group = {
@@ -72,7 +72,7 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
   else
     puntuacion = false;
 
-  if (msg.chat.type !== "group" || msg.chat.type !== "supergroup") {
+  if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else if (user == userMsg) {
     bot.sendMessage(idGroup, "You can't vote yourself");
@@ -117,7 +117,7 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
 bot.onText(/\/topUser/, function(msg, match) {
   var idGroup = msg.chat.id;
   console.log(msg.chat.type);
-  if (msg.chat.type !== "group" || msg.chat.type !== "supergroup") {
+  if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
