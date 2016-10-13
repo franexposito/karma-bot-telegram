@@ -3,9 +3,9 @@ var TelegramBot = require('node-telegram-bot-api'),
   mongodb = require("mongodb"),
   mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/topusers',
   ObjectID = mongodb.ObjectID,
-  port = process.env.PORT || 443,
+  port = process.env.OPENSHIFT_NODEJS_PORT || 443,
   host = '0.0.0.0',
-  externalUrl = process.env.URL || false,
+  externalUrl = process.env.OPENSHIFT_NODEJS_IP || false,
   token = process.env.TOKEN,
   options = {
     webHook: {
