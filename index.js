@@ -58,6 +58,7 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot /karma username?
+/*
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
   console.log("entra en devoler");
   var idGroup = msg.chat.id;
@@ -95,7 +96,7 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
     });
   }
 
-});
+});*/
 
 //Bot /karma username++
 bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
