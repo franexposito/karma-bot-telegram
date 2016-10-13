@@ -21,7 +21,7 @@ if (externalUrl == false) {
   bot = new TelegramBot(token, {polling: true});
 } else {
   bot = new TelegramBot(token, options);
-  bot.setWebHook(externalUrl + ':443/' + token);
+  bot.setWebHook(externalUrl + ':'+process.env.PORT+'/' + token);
 }
 
 var Groups = require('./app/models/groups.js');
