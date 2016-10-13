@@ -114,7 +114,7 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
 });
 
 //Show top3 of users
-bot.onText(/\/topUser/, function(msg, match) {
+bot.onText(/\/topuser/, function(msg, match) {
   var idGroup = msg.chat.id;
   console.log(msg.chat.type);
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
