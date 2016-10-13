@@ -57,7 +57,47 @@ bot.onText(/\/start/, function(msg, match) {
   }
 });
 
-//Bot @username++
+//Bot /karma username?
+bot.onText(/\/karma @(.+)\?/, function(msg, match) {
+  var idGroup = msg.chat.id;
+  var user = match[1].substr(0, match[1].length-1);
+  //delete whitespaces
+  user = user.replace(/\s+/g, '');
+
+  if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
+    bot.sendMessage(idGroup, "This bot only works in groups");
+  } else {
+    Groups.getGroup(idGroup).then( function(data) {
+      if (data.length > 0) {
+        return data[0];
+      } else {
+        throw ({name: "NullGroupException", message: "There is no group in db"});
+      }
+    }).then( function (data) {
+      var users = data.members;
+      var index = Groups.indexOfMember(users, user);
+
+      if (index > -1) {
+        var puntuacion = users[index].votes;
+        bot.sendMessage(idGroup, "@" +user+ " - <strong>"+puntuacion+" votes</strong>", {parse_mode: "HTML"});
+      } else {
+        throw ({name: "UserNotFound", message: "There is no user in this group with this username"});
+      }
+      data.members = users;
+    }).catch(function (err) {
+      console.log("EROR (" + new Date() + "): " + err.message);
+      if (err.name === "NullGroupException")
+        bot.sendMessage(idGroup, "You need to start this group before. (/start@bestuserbot)");
+      else if (err.name === "UserNotFound")
+        bot.sendMessage(idGroup, "@" +user+ " do not has votes");
+      else
+        bot.sendMessage(idGroup, "An error has occurred");
+    });
+  }
+
+});
+
+//Bot /karma username++
 bot.onText(/\/karma @(.+)/, function(msg, match) {
   var puntuacion = match[1].substr(match[1].length-2, match[1].length);
   var idGroup = msg.chat.id;
