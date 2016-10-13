@@ -59,8 +59,10 @@ bot.onText(/\/start/, function(msg, match) {
 
 //Bot /karma username?
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
+  console.log(msg);
+  console.log("entra en devoler");
   var idGroup = msg.chat.id;
-  var user = match[1].substr(0, match[1].length-1);
+  var user = match[1];
   //delete whitespaces
   user = user.replace(/\s+/g, '');
 
@@ -83,7 +85,6 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
       } else {
         throw ({name: "UserNotFound", message: "There is no user in this group with this username"});
       }
-      data.members = users;
     }).catch(function (err) {
       console.log("EROR (" + new Date() + "): " + err.message);
       if (err.name === "NullGroupException")
@@ -99,7 +100,8 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
 
 //Bot /karma username++
 bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
-  console.log(match);
+  console.log(msg);
+  console.log("entra en voto");
   var puntuacion = match[2];
   var idGroup = msg.chat.id;
   var userMsg = msg.from.username;
