@@ -116,7 +116,7 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
 //Show top3 of users
 bot.onText(/\/topUser/, function(msg, match) {
   var idGroup = msg.chat.id;
-
+  console.log(msg.chat.type);
   if (msg.chat.type !== "group") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
@@ -132,10 +132,10 @@ bot.onText(/\/topUser/, function(msg, match) {
         users.sort(function(a, b) { return b.votes - a.votes; });
         var users_text = '';
         for (var i = 0; i < 3 && i < users.length; i++) {
-          users_text += (i+1)+'- @'+ users[i].name + ': **' + users[i].votes + ' votes**\n';
+          users_text += (i+1)+'- @'+ users[i].name + ': <strong>' + users[i].votes + ' votes</strong>\n';
         }
         var final = 'Top users\n' + users_text;
-        bot.sendMessage(idGroup, final, { 'parse_mode': 'markdown'} );
+        bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
       } else {
         bot.sendMessage(idGroup, "Nobody has votes in this group!");
       }
