@@ -26,7 +26,7 @@ if (externalUrl == false) {
 
 var Groups = require('./app/models/groups.js');
 
-//Bot /start
+//Bot on /start
 bot.onText(/\/start/, function(msg, match) {
   var fromId = msg.chat.id;
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
@@ -57,7 +57,7 @@ bot.onText(/\/start/, function(msg, match) {
   }
 });
 
-//Bot /karma username?
+//Bot on /karma username?
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
   var idGroup = msg.chat.id;
   var user = match[1];
@@ -95,7 +95,7 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
   }
 });
 
-//Bot /karma username++
+//Bot on /karma username++
 bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
   var puntuacion = match[2];
   var idGroup = msg.chat.id;
@@ -194,6 +194,6 @@ db.connect(mongoUri, function(err) {
     console.log(err);
     process.exit(1);
   } else {
-    console.log('Bot is ready.');
+    console.log('Bot is ready now.');
   }
 });
