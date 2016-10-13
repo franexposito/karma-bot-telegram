@@ -58,9 +58,7 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot /karma username?
-/*
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
-  console.log("entra en devoler");
   var idGroup = msg.chat.id;
   var user = match[1];
   //delete whitespaces
@@ -95,12 +93,10 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
         bot.sendMessage(idGroup, "An error has occurred");
     });
   }
-
-});*/
+});
 
 //Bot /karma username++
 bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
-  console.log("entra en voto");
   var puntuacion = match[2];
   var idGroup = msg.chat.id;
   var userMsg = msg.from.username;
