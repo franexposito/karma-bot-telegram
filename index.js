@@ -63,6 +63,8 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
   var idGroup = msg.chat.id;
   var userMsg = msg.from.username;
   var user = match[1].substr(0, match[1].length-2);
+  //delete whitespaces
+  user = user.replace(/\s+/g, '');
   var response = "vote for @" + user + ", saved";
 
   if (puntuacion === '++' )
@@ -116,7 +118,6 @@ bot.onText(/\/karma @(.+)/, function(msg, match) {
 //Show top3 of users
 bot.onText(/\/topuser/, function(msg, match) {
   var idGroup = msg.chat.id;
-  console.log(msg.chat.type);
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else {
