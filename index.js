@@ -58,6 +58,7 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot on /karma username?
+/*
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
   var idGroup = msg.chat.id;
   var user = match[1];
@@ -94,6 +95,7 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
     });
   }
 });
+*/
 
 //Bot on /karma username++
 bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
