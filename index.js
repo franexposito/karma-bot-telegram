@@ -1,12 +1,12 @@
-var TelegramBot = require('node-telegram-bot-api'),
+var TelegramBot = require('node-telegram-bot-api-latest'),
   db = require('./app/db'),
   mongodb = require("mongodb"),
   mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/topusers',
   ObjectID = mongodb.ObjectID,
-  port = process.env.PORT || 443,
+  port = process.env.OPENSHIFT_NODEJS_PORT || 443,
   host = '0.0.0.0',
-  externalUrl = process.env.URL || false,
-  token = process.env.TELEGRAM_TOKEN,
+  externalUrl = process.env.OPENSHIFT_NODEJS_IP || false,
+  token = process.env.TOKEN,
   options = {
     webHook: {
       host: host,
@@ -21,12 +21,12 @@ if (externalUrl == false) {
   bot = new TelegramBot(token, {polling: true});
 } else {
   bot = new TelegramBot(token, options);
-  bot.setWebHook(externalUrl + ':443/' + token);
+  bot.setWebHook(externalUrl + ':'+process.env.PORT+'/' + token);
 }
 
 var Groups = require('./app/models/groups.js');
 
-//Bot /start
+//Bot on /start
 bot.onText(/\/start/, function(msg, match) {
   var fromId = msg.chat.id;
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
@@ -57,12 +57,51 @@ bot.onText(/\/start/, function(msg, match) {
   }
 });
 
-//Bot @username++
-bot.onText(/\/karma @(.+)/, function(msg, match) {
-  var puntuacion = match[1].substr(match[1].length-2, match[1].length);
+//Bot on /karma username?
+
+bot.onText(/\/karma @(.+)\?/, function(msg, match) {
+  var idGroup = msg.chat.id;
+  var user = match[1];
+  //delete whitespaces
+  user = user.replace(/\s+/g, '');
+
+  if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
+    bot.sendMessage(idGroup, "This bot only works in groups");
+  } else {
+    Groups.getGroup(idGroup).then( function(data) {
+      if (data.length > 0) {
+        return data[0];
+      } else {
+        throw ({name: "NullGroupException", message: "There is no group in db"});
+      }
+    }).then( function (data) {
+      var users = data.members;
+      var index = Groups.indexOfMember(users, user);
+
+      if (index > -1) {
+        var puntuacion = users[index].votes;
+        bot.sendMessage(idGroup, "@" +user+ " - <strong>"+puntuacion+" votes</strong>", {parse_mode: "HTML"});
+      } else {
+        throw ({name: "UserNotFound", message: "There is no user in this group with this username"});
+      }
+    }).catch(function (err) {
+      console.log("EROR (" + new Date() + "): " + err.message);
+      if (err.name === "NullGroupException")
+        bot.sendMessage(idGroup, "You need to start this group before. (/start@bestuserbot)");
+      else if (err.name === "UserNotFound")
+        bot.sendMessage(idGroup, "@" +user+ " do not has votes");
+      else
+        bot.sendMessage(idGroup, "An error has occurred");
+    });
+  }
+});
+
+//Bot on /karma username++
+bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
+  var puntuacion = match[2];
   var idGroup = msg.chat.id;
   var userMsg = msg.from.username;
-  var user = match[1].substr(0, match[1].length-2);
+  var user = match[1];
   //delete whitespaces
   user = user.replace(/\s+/g, '');
   var response = "vote for @" + user + ", saved";
@@ -156,6 +195,6 @@ db.connect(mongoUri, function(err) {
     console.log(err);
     process.exit(1);
   } else {
-    console.log('Bot is ready.');
+    console.log('Bot is ready now.');
   }
 });
