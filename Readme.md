@@ -51,4 +51,4 @@ I am open to add new features. If you have an idea just let me know [here](https
 ## Contribute to Karma Bot
 Contributions are always welcome, no matter how large or small.
 
-![icon.png](./icon.png)
+![icon.png](./icon.png =250x250)
