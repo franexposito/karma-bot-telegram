@@ -1,6 +1,6 @@
 # Karma Bot
 
-Karma is a Bot for [Telegram](https://telegram.org/) to keet control of the user's reputation in a group.
+Karma is a bot for [Telegram](https://telegram.org/) to keep control of the user's reputation in a group. You can add bot [here](https://storebot.me/mybots?bot=bestuserbot).
 
 ## How to use
 
