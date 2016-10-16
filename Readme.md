@@ -46,7 +46,7 @@ If you find a problem with the bot you can open a issue [here](https://github.co
 
 ## Improvements
 I am open to add new features. If you have an idea just let me know [here](https://github.com/franexposito/karma-bot-telegram/issues).  
-*(Open a issue with **enhancement** tag)*.
+*(Open a issue with enhancement tag)*.
 
 ## Contribute to Karma Bot
 Contributions are always welcome, no matter how large or small.
