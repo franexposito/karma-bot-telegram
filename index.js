@@ -209,13 +209,11 @@ bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
 
   if (match[2].length == undefined) {
     num = 3;
-  } else if (num < 0) {
+  } else if (num <= 0) {
     num = 10;
   } else if (num > 20) {
     num = 20;
   }
-
-  console.log(num);
 
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(idGroup, "This bot only works in groups");
