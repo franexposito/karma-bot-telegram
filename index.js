@@ -203,12 +203,11 @@ bot.onText(/\/topuser/, function(msg, match) {
 });
 
 //Show history
-bot.onText(/\/history\s*(\d+)/, function(msg, match) {
+bot.onText(/\/history\s+(\d+)/, function(msg, match) {
   var idGroup = msg.chat.id;
   var num = parseInt(match[1]);
-  console.log(msg);
   console.log(match);
-  console.log(num);
+  console.log(num.length);
 
   if (num.length < 1) {
     num = 3;
