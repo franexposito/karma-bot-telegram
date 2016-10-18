@@ -206,8 +206,6 @@ bot.onText(/\/topuser/, function(msg, match) {
 bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
   var idGroup = msg.chat.id;
   var num = parseInt(match[2]);
-  console.log(match);
-  console.log(num);
 
   if (num.length == undefined) {
     num = 3;
@@ -216,6 +214,8 @@ bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
   } else if (num > 20) {
     num = 20;
   }
+
+  console.log(num);
 
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(idGroup, "This bot only works in groups");
