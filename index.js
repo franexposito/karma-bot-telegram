@@ -203,14 +203,16 @@ bot.onText(/\/topuser/, function(msg, match) {
 });
 
 //Show history
-bot.onText(/\/history\s*([0-9]*)/, function(msg, match) {
+bot.onText(/\/history\s*(\d+)/, function(msg, match) {
   var idGroup = msg.chat.id;
   var num = parseInt(match[1]);
   console.log(msg);
   console.log(match);
   console.log(num);
 
-  if (num < 0) {
+  if (num.length < 1) {
+    num = 3;
+  } else if (num < 0) {
     num = 10;
   } else if (num > 20) {
     num = 20;
@@ -230,14 +232,16 @@ bot.onText(/\/history\s*([0-9]*)/, function(msg, match) {
       if (users.length > 0) {
         users.sort(function(a, b) { return b.date - a.date; });
         var users_text = '';
+        var cont;
         for (var i = 0; i < num && i < users.length; i++) {
+          cont++;
           var v = "--";
           if (users[i].vote > 0)
             v = "++";
 
           users_text += users[i].date + ': @' + users[i].from + '-> @'+users[i].from +' '+v+'\n';
         }
-        var final = 'Last '+num+' votes\n' + users_text;
+        var final = 'Last '+cont+' votes\n' + users_text;
         bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
       } else {
         bot.sendMessage(idGroup, "Nobody has votes in this group!");
