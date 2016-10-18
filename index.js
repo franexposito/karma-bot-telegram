@@ -209,7 +209,7 @@ bot.onText(/\/history(@bestuserbot)?\s+(\d+)/, function(msg, match) {
   console.log(match);
   console.log(num);
 
-  if (num == undefined) {
+  if (num.length == undefined) {
     num = 3;
   } else if (num < 0) {
     num = 10;
@@ -233,12 +233,12 @@ bot.onText(/\/history(@bestuserbot)?\s+(\d+)/, function(msg, match) {
         var users_text = '';
         var cont = 0;
         for (var i = 0; i < num && i < users.length; i++) {
-          cont++;
+          cont += 1;
           var v = "--";
           if (users[i].vote > 0)
             v = "++";
 
-          users_text += users[i].date + ': @' + users[i].from + '-> @'+users[i].to +' '+v+'\n';
+          users_text += users[i].date + ': @' + users[i].from + ' -> @'+users[i].to +' '+v+'\n';
         }
         var final = 'Last '+cont+' votes\n' + users_text;
         bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
