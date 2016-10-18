@@ -207,7 +207,7 @@ bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
   var idGroup = msg.chat.id;
   var num = parseInt(match[2]);
 
-  if (match[2].length == undefined) {
+  if (match[2].length == undefined || isNaN(num)) {
     num = 3;
   } else if (num <= 0) {
     num = 10;
