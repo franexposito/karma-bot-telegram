@@ -50,5 +50,6 @@ I am open to add new features. If you have an idea just let me know [here](https
 
 ## Contribute to Karma Bot
 Contributions are always welcome, no matter how large or small.
+Special thanks to [@ccamposfuentes](https://github.com/ccamposfuentes) for the logo :)
 
 <img src="./icon.png" align="left" height="250" width="250" >
