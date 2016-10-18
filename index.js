@@ -223,7 +223,7 @@ bot.onText(/\/history\s*(\d*)/, function(msg, match) {
         throw ({name: "NullGroupException", message: "There is no group in db"});
       }
     }).then( function (data) {
-      var users = data.history;
+      var users = data.historyV;
       if (users.length > 0) {
         users.sort(function(a, b) { return b.date - a.date; });
         var users_text = '';
