@@ -37,7 +37,7 @@ bot.onText(/\/start/, function(msg, match) {
       _createdAt: new Date(),
       name: msg.chat.title,
       members: [],
-      history: [],
+      historyV: [],
       idGroup: msg.chat.id
     };
 
@@ -130,6 +130,12 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
     }).then( function (data) {
       var users = data.members;
       var index = Groups.indexOfMember(users, user);
+      var h = {
+        date: new Date(),
+        from: userMsg,
+        to: user,
+        vote: puntuacion
+      };
 
       if (index > -1) {
         users[index].votes += puntuacion;
@@ -141,6 +147,9 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
         users.push(newUser);
       }
       data.members = users;
+      //save history
+      data.historyV.push(h);
+      //update group
       return Groups.save(data);
     }).then( function (resp) {
       bot.sendMessage(idGroup, response);
