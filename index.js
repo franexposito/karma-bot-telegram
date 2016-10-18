@@ -16,6 +16,7 @@ var TelegramBot = require('node-telegram-bot-api-latest'),
   };
 
 var bot;
+
 // Setup polling way
 if (externalUrl == false) {
   bot = new TelegramBot(token, {polling: true});
@@ -36,6 +37,7 @@ bot.onText(/\/start/, function(msg, match) {
       _createdAt: new Date(),
       name: msg.chat.title,
       members: [],
+      history: [],
       idGroup: msg.chat.id
     };
 
@@ -58,7 +60,6 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot on /karma username?
-
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
   var idGroup = msg.chat.id;
   var user = match[1];
@@ -172,7 +173,8 @@ bot.onText(/\/topuser/, function(msg, match) {
         users.sort(function(a, b) { return b.votes - a.votes; });
         var users_text = '';
         for (var i = 0; i < 3 && i < users.length; i++) {
-          users_text += (i+1)+'- @'+ users[i].name + ': <strong>' + users[i].votes + ' votes</strong>\n';
+          if (users[i].votes > 0)
+            users_text += (i+1)+'- @'+ users[i].name + ': <strong>' + users[i].votes + ' votes</strong>\n';
         }
         var final = 'Top users\n' + users_text;
         bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
@@ -197,7 +199,7 @@ bot.onText(/\/help/, function(msg, match) {
   mensaje += "For see the top and user's karma you can use <strong>/topuser</strong> and <strong>/karma @username?</strong>\n";
   mensaje += "For see the history you can use <strong>/history</strong>\n\n";
   mensaje += "Thanks for use Karma Bot. You can contact with me <a href='https://github.com/franexposito/karma-bot-telegram/issues'>here</a>.";
-  bot.sendMessage(idGroup, mensaje,  { disable_web_page_preview: true, parse_mode: "HTML" } );
+  bot.sendMessage(idGroup, mensaje,  { disable_notification: true, disable_web_page_preview: true, parse_mode: "HTML" } );
 });
 
 // Connect to Mongo on start
