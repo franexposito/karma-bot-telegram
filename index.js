@@ -16,6 +16,7 @@ var TelegramBot = require('node-telegram-bot-api-latest'),
   };
 
 var bot;
+
 // Setup polling way
 if (externalUrl == false) {
   bot = new TelegramBot(token, {polling: true});
@@ -36,6 +37,7 @@ bot.onText(/\/start/, function(msg, match) {
       _createdAt: new Date(),
       name: msg.chat.title,
       members: [],
+      historyV: [],
       idGroup: msg.chat.id
     };
 
@@ -58,7 +60,6 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot on /karma username?
-
 bot.onText(/\/karma @(.+)\?/, function(msg, match) {
   var idGroup = msg.chat.id;
   var user = match[1];
@@ -129,6 +130,12 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
     }).then( function (data) {
       var users = data.members;
       var index = Groups.indexOfMember(users, user);
+      var h = {
+        date: new Date(),
+        from: userMsg,
+        to: user,
+        vote: puntuacion
+      };
 
       if (index > -1) {
         users[index].votes += puntuacion;
@@ -140,6 +147,11 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
         users.push(newUser);
       }
       data.members = users;
+      //save history
+      if (data.historyV == undefined)
+        data.historyV = [];
+      data.historyV.push(h);
+      //update group
       return Groups.save(data);
     }).then( function (resp) {
       bot.sendMessage(idGroup, response);
@@ -172,7 +184,8 @@ bot.onText(/\/topuser/, function(msg, match) {
         users.sort(function(a, b) { return b.votes - a.votes; });
         var users_text = '';
         for (var i = 0; i < 3 && i < users.length; i++) {
-          users_text += (i+1)+'- @'+ users[i].name + ': <strong>' + users[i].votes + ' votes</strong>\n';
+          if (users[i].votes > 0)
+            users_text += (i+1)+'- @'+ users[i].name + ': <strong>' + users[i].votes + ' votes</strong>\n';
         }
         var final = 'Top users\n' + users_text;
         bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
@@ -188,6 +201,61 @@ bot.onText(/\/topuser/, function(msg, match) {
     });
   }
 });
+
+//Show history
+bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
+  var idGroup = msg.chat.id;
+  var num = parseInt(match[2]);
+
+  if (match[2].length == undefined || isNaN(num)) {
+    num = 3;
+  } else if (num <= 0) {
+    num = 10;
+  } else if (num > 20) {
+    num = 20;
+  }
+
+  console.log(match[2].length);
+  console.log(num);
+
+  if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
+    bot.sendMessage(idGroup, "This bot only works in groups");
+  } else {
+    Groups.getGroup(idGroup).then( function(data) {
+      if (data.length > 0) {
+        return data[0];
+      } else {
+        throw ({name: "NullGroupException", message: "There is no group in db"});
+      }
+    }).then( function (data) {
+      var users = data.historyV;
+      if (users.length > 0) {
+        users.sort(function(a, b) { return b.date - a.date; });
+        var users_text = '';
+        var cont = 0;
+        for (var i = 0; i < num && i < users.length; i++) {
+          cont += 1;
+          var v = "--";
+          if (users[i].vote > 0)
+            v = "++";
+
+          users_text += users[i].date + ': @' + users[i].from + ' -> @'+users[i].to +' '+v+'\n';
+        }
+        var final = 'Last '+cont+' votes\n' + users_text;
+        bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
+      } else {
+        bot.sendMessage(idGroup, "Nobody has votes in this group!");
+      }
+    }).catch(function (err) {
+      console.log("EROR (" + new Date() + "): " + err.message);
+      if (err.name === "NullGroupException")
+        bot.sendMessage(idGroup, "You need to start this group before. (/start@bestuserbot)");
+      else
+        bot.sendMessage(idGroup, "An error has occurred");
+    });
+  }
+});
+
 
 bot.onText(/\/help/, function(msg, match) {
   var idGroup = msg.chat.id;
