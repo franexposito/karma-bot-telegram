@@ -203,13 +203,13 @@ bot.onText(/\/topuser/, function(msg, match) {
 });
 
 //Show history
-bot.onText(/\/history\s*(\d*)/, function(msg, match) {
+bot.onText(/\/history(@bestuserbot)?\s+(\d+)/, function(msg, match) {
   var idGroup = msg.chat.id;
-  var num = parseInt(match[1]);
+  var num = parseInt(match[2]);
   console.log(match);
-  console.log(num.length);
+  console.log(num);
 
-  if (num.length < 1) {
+  if (num == undefined) {
     num = 3;
   } else if (num < 0) {
     num = 10;
@@ -238,7 +238,7 @@ bot.onText(/\/history\s*(\d*)/, function(msg, match) {
           if (users[i].vote > 0)
             v = "++";
 
-          users_text += users[i].date + ': @' + users[i].from + '-> @'+users[i].from +' '+v+'\n';
+          users_text += users[i].date + ': @' + users[i].from + '-> @'+users[i].to +' '+v+'\n';
         }
         var final = 'Last '+cont+' votes\n' + users_text;
         bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
