@@ -231,7 +231,7 @@ bot.onText(/\/history(@bestuserbot)?\s+(\d+)/, function(msg, match) {
       if (users.length > 0) {
         users.sort(function(a, b) { return b.date - a.date; });
         var users_text = '';
-        var cont;
+        var cont = 0;
         for (var i = 0; i < num && i < users.length; i++) {
           cont++;
           var v = "--";
