@@ -189,6 +189,17 @@ bot.onText(/\/topuser/, function(msg, match) {
   }
 });
 
+bot.onText(/\/help/, function(msg, match) {
+  var idGroup = msg.chat.id;
+  var mensaje = "Karma Bot allows you to keep the control of the user's reputation in a group.\n";
+  mensaje += "You must call <strong>/start</strong> to initialize the top.\n\n";
+  mensaje += "For add positive or negative karma you can use <strong>/karma @username++</strong> or <strong>/karma @username--</strong>\n";
+  mensaje += "For see the top and user's karma you can use <strong>/topuser</strong> and <strong>/karma @username?</strong>\n";
+  mensaje += "For see the history you can use <strong>/history</strong>\n\n";
+  mensaje += "Thanks for use Karma Bot. You can contact with me <a href='https://github.com/franexposito/karma-bot-telegram/issues'>here</a>.";
+  bot.sendMessage(idGroup, mensaje,  { disable_notification: true, disable_web_page_preview: true, parse_mode: "HTML" } );
+});
+
 // Connect to Mongo on start
 db.connect(mongoUri, function(err) {
   if (err) {
