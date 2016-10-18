@@ -148,6 +148,8 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
       }
       data.members = users;
       //save history
+      if (data.historyV == undefined)
+        data.history = [];
       data.historyV.push(h);
       //update group
       return Groups.save(data);
