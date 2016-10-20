@@ -3,6 +3,7 @@ var TelegramBot = require('node-telegram-bot-api-latest'),
   mongodb = require("mongodb"),
   mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/topusers',
   ObjectID = mongodb.ObjectID,
+  moment = require('moment'),
   port = process.env.OPENSHIFT_NODEJS_PORT || 443,
   host = '0.0.0.0',
   externalUrl = process.env.OPENSHIFT_NODEJS_IP || false,
@@ -15,10 +16,12 @@ var TelegramBot = require('node-telegram-bot-api-latest'),
     polling: true
   };
 
-var bot;
+// Set moment.js format
+moment().format('LLL');
 
+var bot;
 // Setup polling way
-if (externalUrl == false) {
+if (externalUrl === false) {
   bot = new TelegramBot(token, {polling: true});
 } else {
   bot = new TelegramBot(token, options);
@@ -35,6 +38,7 @@ bot.onText(/\/start/, function(msg, match) {
   } else {
     var group = {
       _createdAt: new Date(),
+      _createdAtUnit: msg.date,
       name: msg.chat.title,
       members: [],
       historyV: [],
@@ -60,7 +64,7 @@ bot.onText(/\/start/, function(msg, match) {
 });
 
 //Bot on /karma username?
-bot.onText(/\/karma @(.+)\?/, function(msg, match) {
+bot.onText(/\/karma(?:@bestuserbot)? @([0-9a-zA-Z_]*)\s*\?$/, function(msg, match) {
   var idGroup = msg.chat.id;
   var user = match[1];
   //delete whitespaces
@@ -98,7 +102,7 @@ bot.onText(/\/karma @(.+)\?/, function(msg, match) {
 });
 
 //Bot on /karma username++
-bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
+bot.onText(/\/karma(?:@bestuserbot)? @([0-9a-zA-Z_]*)\s*(\+\+|\-\-)$/, function(msg, match) {
   var puntuacion = match[2];
   var idGroup = msg.chat.id;
   var userMsg = msg.from.username;
@@ -118,7 +122,7 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
     bot.sendMessage(idGroup, "This bot only works in groups");
   } else if (user == userMsg) {
     bot.sendMessage(idGroup, "You can't vote yourself");
-  } else if (puntuacion == false) {
+  } else if (puntuacion === false) {
     bot.sendMessage(idGroup, "You forgot the vote");
   } else {
     Groups.getGroup(idGroup).then( function(data) {
@@ -132,6 +136,7 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
       var index = Groups.indexOfMember(users, user);
       var h = {
         date: new Date(),
+        user_date: msg.date,
         from: userMsg,
         to: user,
         vote: puntuacion
@@ -148,7 +153,7 @@ bot.onText(/\/karma @(.+)(\+\+|\-\-)/, function(msg, match) {
       }
       data.members = users;
       //save history
-      if (data.historyV == undefined)
+      if (data.historyV === undefined)
         data.historyV = [];
       data.historyV.push(h);
       //update group
@@ -203,20 +208,17 @@ bot.onText(/\/topuser/, function(msg, match) {
 });
 
 //Show history
-bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
+bot.onText(/\/history(?:@bestuserbot)?\s*(\d*)/, function(msg, match) {
   var idGroup = msg.chat.id;
-  var num = parseInt(match[2]);
+  var num = parseInt(match[1]);
 
-  if (match[2].length == undefined || isNaN(num)) {
+  if (match[1].length === undefined || isNaN(num)) {
     num = 3;
   } else if (num <= 0) {
     num = 10;
   } else if (num > 20) {
     num = 20;
   }
-
-  console.log(match[2].length);
-  console.log(num);
 
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(idGroup, "This bot only works in groups");
@@ -235,11 +237,12 @@ bot.onText(/\/history(@bestuserbot)?\s*(\d*)/, function(msg, match) {
         var cont = 0;
         for (var i = 0; i < num && i < users.length; i++) {
           cont += 1;
-          var v = "--";
-          if (users[i].vote > 0)
-            v = "++";
-
-          users_text += users[i].date + ': @' + users[i].from + ' -> @'+users[i].to +' '+v+'\n';
+          var v = (users[i].vote > 0) ? "++" : "--" ;
+          var udate = ("user_date" in users[i]) ? new Date(users[i].user_date*1000) : users[i].date;
+          var temp_date = (udate.getUTCMonth() + 1) +'/'+ udate.getUTCDate() +'/'+ udate.getUTCFullYear();
+          var temp_time = udate.getHours() + ':' + udate.getMinutes() + ':' + udate.getSeconds();
+          udate = temp_date + ' ' + temp_time;
+          users_text += udate + ': @' + users[i].from + ' -> @'+users[i].to + v + '\n';
         }
         var final = 'Last '+cont+' votes\n' + users_text;
         bot.sendMessage(idGroup, final,  { parse_mode: "HTML" } );
