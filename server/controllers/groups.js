@@ -143,7 +143,7 @@ bot.onText(/\/karma(?:@bestuserbot)? @([0-9a-zA-Z_]*)\s*(\+\+|\-\-)$/, function(
     }).then( function (resp) {
       bot.sendMessage(idGroup, response);
     }).catch(function (err) {
-      logger.error(error);
+      logger.error(err);
       if (err.name === "NullGroupException")
         bot.sendMessage(idGroup, "You need to start this group before. (/start@bestuserbot)");
       else
@@ -269,7 +269,7 @@ function CompleteGroupInfo(idGroup, info) {
       throw ({name: "GroupNotUpdate", message: "Group not updated"});
     }
   }).then( function(dataSaved) {
-    logger.info(dataSaved);
+
   }).catch(function (err) {
     logger.error(err);
   });
