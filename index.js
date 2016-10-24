@@ -39,15 +39,17 @@ app.get('/', function (req, res) {
 });
 
 // Connect to Mongo on start
+var server;
 db.connect(mongoUri, function(err) {
   if (err) {
     logger.error(err);
     process.exit(1);
   } else {
-    var server = http.createServer(app);
+    server = http.createServer(app);
     var port_app = process.env.OPENSHIFT_NODEJS_PORT || 5000;
-    server.listen(port_app, function() {
-      logger.info('Listening on port '+port_app);
+    var server_app = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+    server.listen(port_app, server_app, function() {
+      logger.info('Listening on ' + server_app + ':' + port_app);
     });
   }
 });
