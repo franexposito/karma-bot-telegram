@@ -7,7 +7,7 @@ var express = require('express'),
   Bot = require('./server/bot'),
   db = require('./server/db'),
   mongodb = require("mongodb"),
-  mongoUri = process.env.MONGOLAB_URI,
+  mongoUri = process.env.MONGOLAB_URI || 'mongodb://test:123456@ds027709.mlab.com:27709/karmabottest',
   ObjectID = mongodb.ObjectID,
   moment = require('moment');
 
@@ -45,8 +45,9 @@ db.connect(mongoUri, function(err) {
     process.exit(1);
   } else {
     var server = http.createServer(app);
-    server.listen(process.env.PORT || 5000, function() {
-      logger.info('Listening on port 5000...');
+    var port_app = process.env.OPENSHIFT_NODEJS_PORT || 5000;
+    server.listen(port_app, function() {
+      logger.info('Listening on port '+port_app);
     });
   }
 });
