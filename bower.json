@@ -1,0 +1,32 @@
+{
+  "name": "karma-bot-telegram",
+  "description": "A bot for telegram to control the karma users in groups",
+  "main": "index.js",
+  "authors": [
+    "Fran Exposito <http://github.com/franexposito>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "telegram",
+    "bot",
+    "top",
+    "user",
+    "karma"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "bootstrap-sass": "^3.3.7",
+    "angular-route": "^1.5.8",
+    "ng-scrollbar": "^0.0.8",
+    "angular-local-storage": "^0.5.2"
+  }
+}

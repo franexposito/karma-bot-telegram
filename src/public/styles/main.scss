@@ -1,0 +1,102 @@
+// Bootstrap
+@import "build/bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+//Colors
+$color-green: #d3e8e1;
+$color-pink: #e44a66;
+$color-blue: #0d1424;
+
+// KarmaBot Style
+body {
+  background-color: #f3f7fa;
+  padding-top: 100px;
+}
+
+body.login-body {
+  padding-top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: $color-blue;
+}
+
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.login-div {
+
+}
+
+.navbar-karma {
+  height: 100px;
+  background-color: $color-green;
+  border-radius: 0;
+  border: none;
+  margin-bottom: 0;
+}
+
+.navbar-karma.fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 16.66666667%;
+  z-index: 99;
+}
+
+.principal {
+  min-height: 500px;
+}
+
+.menu-lateral {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-right: 1px solid #eee;
+  background: #0b1829;
+
+  .menu-header {
+    height: 101px;
+    background-color: $color-blue;
+    border-bottom: 1px solid;
+    border-bottom-color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+
+    .navbar-brand {
+      float: none;
+      height: 60px;
+      display: block;
+      padding: 0 15px;
+      margin-top: 20px;
+      margin-bottom: 0;
+      line-height: inherit;
+
+      img {
+        max-height: 60px;
+        margin: 0 auto;
+      }
+    }
+  }
+
+}
+
+.menu-content {
+
+  .menu-ul {
+    height: 500px;
+
+    li {
+
+      a {
+        display: block;
+      }
+
+    }
+
+  }
+}
