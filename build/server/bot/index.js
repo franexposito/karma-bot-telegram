@@ -1,11 +1,66 @@
-var Groups = require('../models/groups.js'),
+var Groups = require('../groups/groups'),
+  Users = require('../users/users'),
   logger = require('../logger'),
   ModuleBot = require('../bot'),
   bot = ModuleBot.get();
 
 //Bot on /start
-bot.onText(/\/start/, function(msg, match) {
+bot.onText(/\/start\s*([a-zA-Z\d]{6})/, function(msg, match) {
   var fromId = msg.chat.id;
+  var token = match[1];
+
+  if (token) {
+    StartForUser(msg, match);
+  } else {
+    StartFroGroups(msg, match);
+  }
+});
+
+// Start token
+/*bot.onText(/\/start\s*([a-zA-Z\d]{6})/, function(msg, match) {
+  var fromId = msg.chat.id;
+  var token = match[1];
+
+  if (msg.chat.type === "private") {
+    var user = {
+      _createdAt: new Date(),
+      _createdAtUnit: msg.date,
+      id: msg.from.id,
+      first_name: msg.from.first_name,
+      last_name: msg.from.last_name,
+      username: msg.from.username
+    };
+
+    var sess;
+
+    Users.GetTokenAuth(token).then( function(data) {
+      if (data.length > 0) {
+        sess = data[0];
+        return Users.create(user);
+      } else {
+        return false;
+      }
+    }).then( function (data) {
+      if (data === false) {
+        bot.sendMessage(fromId, "Code is incorret.");
+      }
+      else {
+        CheckToken(sess, data);
+        bot.sendMessage(fromId, "Correct code. Now yor browser will be refresh.");
+      }
+    }).catch(function (err) {
+      logger.error(err);
+      if (err.name === "GroupIsInDatabase")
+        bot.sendMessage(fromId, "Welcome back");
+      else
+        bot.sendMessage(fromId, "An error has occurred");
+    });
+  }
+});
+*/
+function StartFroGroups() {
+  var fromId = msg.chat.id;
+  var token = match[1];
   if (msg.chat.type !== "group" && msg.chat.type !== "supergroup") {
     bot.sendMessage(fromId, "This bot only works in groups");
   } else {
@@ -43,7 +98,48 @@ bot.onText(/\/start/, function(msg, match) {
         bot.sendMessage(fromId, "An error has occurred");
     });
   }
-});
+}
+
+function StartForUser(msg, match) {
+  var fromId = msg.chat.id;
+  var token = match[1];
+
+  if (msg.chat.type === "private") {
+    var user = {
+      _createdAt: new Date(),
+      _createdAtUnit: msg.date,
+      id: msg.from.id,
+      first_name: msg.from.first_name,
+      last_name: msg.from.last_name,
+      username: msg.from.username
+    };
+
+    var sess;
+
+    Users.GetTokenAuth(token).then( function(data) {
+      if (data.length > 0) {
+        sess = data[0];
+        return Users.create(user);
+      } else {
+        return false;
+      }
+    }).then( function (data) {
+      if (data === false) {
+        bot.sendMessage(fromId, "Code is incorret.");
+      }
+      else {
+        CheckToken(sess, data);
+        bot.sendMessage(fromId, "Correct code. Now yor browser will be refresh.");
+      }
+    }).catch(function (err) {
+      logger.error(err);
+      if (err.name === "GroupIsInDatabase")
+        bot.sendMessage(fromId, "Welcome back");
+      else
+        bot.sendMessage(fromId, "An error has occurred");
+    });
+  }
+}
 
 //Bot on /karma username?
 bot.onText(/\/karma(?:@bestuserbot)? @([0-9a-zA-Z_]*)\s*\?$/, function(msg, match) {
@@ -273,4 +369,11 @@ function CompleteGroupInfo(idGroup, info) {
   }).catch(function (err) {
     logger.error(err);
   });
+}
+
+function CheckToken(token, user) {
+  token.auth.date = new Date();
+  token.auth.isUsed = true;
+  token.userId = user._id;
+  Users.UpdateToken(token);
 }

@@ -1,8 +1,38 @@
-<div ng-controller="NavCtrl" class="col-sm-2 menu-lateral no-padding" ng-include="'views/parts/nav-lateral.html'"></div>
+<div ng-controller="NavCtrl" class="side-nav fixed menu-lateral np" ng-include="'views/parts/nav-lateral.html'"></div>
 
-<div class="col-sm-10 no-padding col-sm-offset-2 principal">
-  <div ng-include="'views/parts/nav-bar.html'"></div>
-  <div class="col-sm-12">
-    {{saludo}}
+<div class="principal">
+  <div class="row">
+    <div class="col s12 np">
+      <h1 class="title">Dashboard</h1>
+      <h3 class="title">{{user.first_name}} {{user.last_name}}</h3>
+    </div>
+
+    <div id="resumen-groups" class="col s12 box separator-top">
+      <h1 class="box-title">Your stats</h1>
+      <div class="col s12 separator-top"></div>
+      <kr-fillgauge my-category="Groups" my-graph="groups.length" my-index="1"></kr-fillgauge>
+      <kr-fillgauge my-category="Positive votes" my-graph="positiveVotes" my-index="2"></kr-fillgauge>
+      <kr-fillgauge my-category="Negative votes" my-graph="negativeVotes" my-index="3"></kr-fillgauge>
+      <kr-fillgauge my-category="Karma" my-graph="karma" my-index="4"></kr-fillgauge>
+    </div>
+
+    <div id="resumen-groups" class="col s12 separator-top np">
+      <div id="resumen-groups" class="col m6 np-left">
+        <div id="resumen-groups" class="col s12 box">
+          <h1 class="box-title">Last received votes</h1>
+          <div class="col s12 separator-top"></div>
+          <kr-vote class="vote-cont" ng-repeat="v in votesRecieved" my-vote="v" my-index="$index+1" my-type="r"></kr-vote>
+        </div>
+      </div>
+
+      <div id="resumen-groups" class="col m6 np-right">
+        <div id="resumen-groups" class="col s12 box">
+          <h1 class="box-title">Last sended votes</h1>
+          <div class="col s12 separator-top"></div>
+          <kr-vote class="vote-cont" ng-repeat="v in votesSended" my-vote="v" my-index="$index+1" my-type="s"></kr-vote>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>

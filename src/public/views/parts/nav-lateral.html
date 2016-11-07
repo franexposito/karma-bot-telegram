@@ -1,11 +1,13 @@
-<div class="col-sm-12 no-padding menu-header">
-  <h1 class="navbar-brand">
-    <img alt="brand-logo" src="assets/img/logo.png">
-  </h1>
+<div class="col s12 np menu-header valign-wrapper">
+  <img class="valign" alt="brand-logo" src="assets/img/logo.png">
 </div>
 
-<div class="col-sm-12 no-padding menu-content">
-  <ul class="menu-ul">
-    <li ng-repeat="group in groups"><a class="menu-a" href="">{{group.name}}</a>
-  </ul>
-</div>
+<ul class="col s12 menu-content np">
+  <div class="separator-top"></div>
+  <li><h4>Groups</h4></li>
+  <li ng-repeat="group in groups"><a class="truncate waves-effect waves-light" href="">{{group.name}}</a></li>
+  <div class="separator-top"></div>
+  <li><h4>{{user.first_name}} {{user.last_name}}</h4></li>
+  <li><a class="waves-effect waves-light" href="/">Home</a></li>
+  <li><a class="waves-effect waves-light" href="/logout">Log out</a></li>
+</ul>

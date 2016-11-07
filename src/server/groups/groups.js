@@ -15,10 +15,21 @@ exports.getGroup = function(id) {
   return result;
 };
 
-exports.all = function() {
+exports.all = function(username) {
   var collection = db.get().collection('groups');
   var result = new Promise( function(resolve, reject) {
-    collection.find().sort().limit(100).toArray(function(err, docs) {
+    var query = {
+        "historyV": {
+          "$elemMatch": {
+            "$or": [
+              {"from": username},
+              {"to": username}
+            ]
+          }
+        }
+    };
+
+    collection.find(query).toArray(function(err, docs) {
       if (err) {
         reject(err);
       } else {

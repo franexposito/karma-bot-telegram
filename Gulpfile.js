@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 var filesToMove = [
   "./src/public/assets/**/*",
   "./src/public/views/**/*",
+  "./src/public/js/vendor/*",
   "./src/server/**/*",
   "./src/index.js",
   "./src/server/logs/"
@@ -21,9 +22,8 @@ var options = {
 
 var serverFiles = [
   './build/index.js',
-  './build/server/controllers/*.js',
-  './build/server/models/*.js',
-  './build/server/*.js'
+  './src/server/**/*.js',
+  './build/server/**/*.js',
 ];
 
 gulp.task('styles', function() {
@@ -35,12 +35,14 @@ gulp.task('styles', function() {
 
 gulp.task('minify', function() {
   return gulp.src([
-      'src/public/js/*.js'
+      'src/public/js/_graphs.js',
+      'src/public/js/app.js'
     ])
     .pipe(concat('app.min.js'))
     .pipe(uglify({
       compress: {
-        drop_console: true
+        drop_console: true,
+        hoist_funs: false
       }
     }))
     .pipe(gulp.dest('build/public/js/'));

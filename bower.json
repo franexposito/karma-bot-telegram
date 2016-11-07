@@ -24,9 +24,11 @@
   ],
   "dependencies": {
     "angular": "^1.5.8",
-    "bootstrap-sass": "^3.3.7",
     "angular-route": "^1.5.8",
     "ng-scrollbar": "^0.0.8",
-    "angular-local-storage": "^0.5.2"
+    "angular-local-storage": "^0.5.2",
+    "materialize": "^0.97.8",
+    "components-font-awesome": "^4.7.0",
+    "d3": "^4.3.0"
   }
 }

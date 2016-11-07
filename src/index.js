@@ -8,17 +8,14 @@ var express = require('express'),
   Bot = require('./server/bot'),
   dbM = require('./server/db'),
   mongodb = require("mongodb"),
-  //mongoUri = process.env.MONGOLAB_URI || 'mongodb://test:123456@ds027709.mlab.com:27709/karmabottest',
-  mongoUri = process.env.MONGOLAB_URI || 'mongodb://test:123456@ds045598.mlab.com:45598/topusers',
+  mongoUri = process.env.MONGOLAB_URI || 'mongodb://test:123456@ds027709.mlab.com:27709/karmabottest',
   ObjectID = mongodb.ObjectID,
   moment = require('moment');
 
 
 // Config express
 app = express();
-app.use(require('morgan')('combined', {
-  stream: logger.stream
-}));
+app.use(require('morgan')('combined', { stream: logger.stream }));
 app.use('/lib', express.static(path.join(__dirname, '/bower_components')));
 app.use(express.static(__dirname + "/public"));
 app.set('views', __dirname + '/public/views');
@@ -26,8 +23,38 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(bodyParser.json());
 
+//Sessions
+var options = {
+  secret: 'cookie_secret',
+  name: 'karma_sess',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+  },
+  store: new MongoStore({
+    url: mongoUri,
+    autoRemove: 'native'
+  }),
+  rolling: true
+};
+
+app.use(session(options));
+
+// Middleware for user sessions
+app.use(function(req, res, next) {
+  if (req.session && req.session.user) {
+    req.user = req.session.user;
+    next();
+  } else {
+    next();
+  }
+});
+
 //Routes
-app.use('/api/groups', require('./server/controllers/groups_api'));
+app.use('/api/groups', require('./server/groups/routes'));
+app.use('/api/users', require('./server/users/routes'));
+app.use('/', require('./server/routes'));
 
 // Set moment.js format
 moment().format("MM/DD/YYYY HH:mm:ss");
@@ -38,24 +65,8 @@ Bot.connect(function(err) {
   if (err) {
     logger.error("Bot is not working");
   } else {
-    Groups = require('./server/controllers/groups');
+    Groups = require('./server/bot/index');
   }
-});
-
-// Routes
-app.get('/', function(req, res) {
-  var user = req.session;
-  if (user) {
-    res.render('index.html');
-  } else {
-    res.redirect('/login');
-    res.end();
-  }
-});
-
-app.get('/login', function(req, res) {
-  var user = req.session;
-  res.render('index.html');
 });
 
 // Connect to Mongo on start
@@ -65,16 +76,6 @@ dbM.connect(mongoUri, function(err) {
     logger.error(err);
     process.exit(1);
   } else {
-    var options = {
-      secret: 'cookie_secret',
-      name: 'karma_sess_',
-      store: new MongoStore({
-        db: dbM.get()
-      }),
-      resave: true,
-      saveUninitialized: true
-    };
-    app.use(session(options));
     server = http.createServer(app);
     var port_app = process.env.NODEJS_PORT || 5000;
     var server_app = process.env.NODEJS_IP || 'localhost';

@@ -1,0 +1,8 @@
+<div class="col s12 vote">
+  <span class="number">{{myIndex}}</span>
+  <h2 ng-if="myType == 'r'"><strong>{{myVote.from}}</strong> voted you in <strong>{{myVote.groupName}}</strong></h2>
+  <h2 ng-if="myType == 's'">You voted for <strong>{{myVote.to}}</strong> in <strong>{{myVote.groupName}}</strong></h2>
+  <h5>{{myVote.date | date:"MM/dd/yyyy 'at' HH:mm"}}</h5>
+  <span ng-if="myVote.score == 1" class="score positive"></span>
+  <span ng-if="myVote.score == -1" class="score negative"></span>
+</div>

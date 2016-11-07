@@ -53,4 +53,4 @@ Contributions are always welcome, no matter how large or small.
 
 **Special thanks to [@ccamposfuentes](https://github.com/ccamposfuentes) for the logo :)**
 
-<img src="./icon.png" align="left" height="250" width="250" >
+<img src="./src/public/assets/img/icon.png" align="left" height="250" width="250" >
