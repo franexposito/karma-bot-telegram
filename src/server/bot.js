@@ -2,6 +2,7 @@ var TelegramBot = require('node-telegram-bot-api-latest'),
   port = process.env.TELEGRAM_PORT || 553,
   host = '0.0.0.0',
   externalUrl = process.env.NODEJS_IP || false,
+
   token = process.env.TOKEN || '278952241:AAFDpSew6V80bQSeJWba9D40qIqC3XiXHD0',
   options = {
     webHook: {
