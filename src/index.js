@@ -9,7 +9,6 @@ var express = require('express'),
   dbM = require('./server/db'),
   mongodb = require("mongodb"),
   mongoUri = process.env.MONGOLAB_URI || 'mongodb://test:123456@ds027709.mlab.com:27709/karmabottest',
-
   ObjectID = mongodb.ObjectID,
   moment = require('moment');
 
