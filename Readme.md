@@ -41,6 +41,16 @@ This command show the top 3 users with more positive karma in a group.
 This command is used to see user's karma.  
 *(You can add a empty space after username)*
 
+## Website
+There is a website in development for show data about your reputation and votes.
+
+### Screenshots
+![](http://i.imgur.com/0heZrYQ.png)  
+[link](http://i.imgur.com/0heZrYQ.png)
+
+![](http://i.imgur.com/znLOCWp.png)
+[link](http://i.imgur.com/znLOCWp.png)
+
 ## Issues
 If you find a problem with the bot you can open a issue [here](https://github.com/franexposito/karma-bot-telegram/issues).
 
@@ -53,4 +63,4 @@ Contributions are always welcome, no matter how large or small.
 
 **Special thanks to [@ccamposfuentes](https://github.com/ccamposfuentes) for the logo :)**
 
-<img src="./src/public/assets/img/icon.png" align="left" height="250" width="250" >
+<img src="http://i.imgur.com/eR2RJ7T.png" align="left" height="250" width="250" >
